@@ -39,7 +39,7 @@ class CreateArticlesTest extends TestCase
         $response->assertExactJson([
             'data' => [
                 'type' => 'articles',
-                'id' => (string) $article->getRouteKey(),
+                'id' => (string)$article->getRouteKey(),
                 'attributes' => [
                     'title' => 'New Article',
                     'slug' => 'new-article',
@@ -63,9 +63,19 @@ class CreateArticlesTest extends TestCase
                     'content' => 'Content of the Article',
                 ]
             ]
-        ]);
+        ])->dump();
 
-        $response->assertJsonValidationErrors('data.attributes.title');
+        $response->assertJsonStructure([
+            'errors' => [
+                ['title', 'detail', 'source' => ['pointer']]
+            ]
+        ])->assertHeader(
+            'content-type', 'application/vnd.api+json'
+        )->assertJsonFragment([
+            'source' => ['pointer' => '/data/attributes/title']
+        ])->assertStatus(422);
+
+//        $response->assertJsonApiValidationErrors('title');
     }
 
     /** @test */
@@ -80,7 +90,7 @@ class CreateArticlesTest extends TestCase
                     'content' => 'Content of the Article',
                 ]
             ]
-        ])->dump();
+        ]);
 
         $response->assertJsonValidationErrors('data.attributes.title');
     }
