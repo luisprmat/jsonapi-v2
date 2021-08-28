@@ -21,7 +21,8 @@ trait MakesJsonApiRequests
         );
     }
 
-    public function withoutJsonApiDocumentFormatting() {
+    public function withoutJsonApiDocumentFormatting()
+    {
         $this->formatJsonApiDocument = false;
     }
 
@@ -30,8 +31,7 @@ trait MakesJsonApiRequests
         $headers['accept'] = 'application/vnd.api+json';
 
         if ($this->formatJsonApiDocument) {
-            $formattedData['data']['attributes'] = $data;
-            $formattedData['data']['type'] = (string) Str::of($uri)->after('api/v1/');
+            $formattedData = $this->getFormattedData($uri, $data);
         }
 
         return parent::json($method, $uri, $formattedData ?? $data, $headers);
@@ -60,7 +60,7 @@ trait MakesJsonApiRequests
             /** @var TestResponse $this */
 
             $pointer = Str::of($attribute)->startsWith('data')
-                ? "/".str_replace('.', '/', $attribute)
+                ? "/" . str_replace('.', '/', $attribute)
                 : "/data/attributes/{$attribute}";
 
             try {
@@ -94,5 +94,25 @@ trait MakesJsonApiRequests
             );
             $this->assertStatus(422);
         };
+    }
+
+    /**
+     * @param $uri
+     * @param array $data
+     * @return array
+     */
+    protected function getFormattedData($uri, array $data): array
+    {
+        $path = parse_url($uri)['path'];
+        $type = (string) Str::of($path)->after('api/v1/')->before('/');
+        $id = (string) Str::of($path)->after($type)->replace('/', '');
+
+        return [
+            'data' => array_filter([
+                'type' => $type,
+                'id' => $id,
+                'attributes' => $data
+            ])
+        ];
     }
 }
