@@ -14,8 +14,6 @@ class ListArticlesTest extends TestCase
     /** @test */
     public function can_fetch_a_single_article()
     {
-        $this->withoutExceptionHandling();
-
         $article = Article::factory()->create();
 
         $response = $this->getJson(route('api.v1.articles.show', $article));
@@ -39,8 +37,6 @@ class ListArticlesTest extends TestCase
     /** @test */
     function can_fetch_all_articles()
     {
-        $this->withoutExceptionHandling();
-
         $articles = Article::factory()->count(3)->create();
 
         $response = $this->getJson(route('api.v1.articles.index'));
