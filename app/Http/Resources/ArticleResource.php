@@ -9,19 +9,31 @@ class ArticleResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
     {
         return [
             'type' => 'articles',
-            'id' => (string) $this->resource->getRouteKey(),
-            'attributes' => [
+            'id' => (string)$this->resource->getRouteKey(),
+            'attributes' => array_filter([
                 'title' => $this->resource->title,
                 'slug' => $this->resource->slug,
                 'content' => $this->resource->content
-            ],
+            ], function ($value) {
+                if (request()->isNotFilled('fields')) {
+                    return true;
+                }
+
+                $fields = explode(',', request('fields.articles'));
+
+                if ($value === $this->getRouteKey()) {
+                    return in_array('slug', $fields);
+                }
+
+                return $value;
+            }),
             'links' => [
                 'self' => route('api.v1.articles.show', $this->resource)
             ]
