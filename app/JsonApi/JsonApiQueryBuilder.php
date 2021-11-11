@@ -54,13 +54,7 @@ class JsonApiQueryBuilder
                 return $this;
             }
 
-            $resourceType = $this->model->getTable();
-
-            if (property_exists($this->model, 'resourceType')) {
-                $resourceType = $this->model->resourceType;
-            }
-
-            $fields = explode(',', request('fields.' . $resourceType));
+            $fields = explode(',', request('fields.' . $this->getResourceType()));
 
             $routeKeyName = $this->model->getRouteKeyName();
 
@@ -82,6 +76,18 @@ class JsonApiQueryBuilder
                 $pageName = 'page[number]',
                 $page = request('page.number', 1)
             )->appends(request()->only('sort', 'filter', 'page.size'));
+        };
+    }
+
+    public function getResourceType(): Closure
+    {
+        return function () {
+            /** @var Builder $this */
+            if (property_exists($this->model, 'resourceType')) {
+                return $this->model->resourceType;
+            }
+
+            return $this->model->getTable();
         };
     }
 }
