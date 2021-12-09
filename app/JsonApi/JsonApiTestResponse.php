@@ -75,6 +75,29 @@ class JsonApiTestResponse
         };
     }
 
+    public function assertJsonApiRelationshipLinks(): Closure
+    {
+        return function ($model, $relations) {
+            /** @var TestResponse $this */
+            foreach ($relations as $relation) {
+                $this->assertJson([
+                    'data' => [
+                        'relationships' => [
+                            'category' => [
+                                'links' => [
+                                    'self' => route("api.v1.{$model->getResourceType()}.relationships.{$relation}", $model),
+                                    'related' => route("api.v1.{$model->getResourceType()}.{$relation}", $model)
+                                ]
+                            ]
+                        ]
+                    ]
+                ]);
+            }
+
+            return $this;
+        };
+    }
+
     public function assertJsonApiResourceCollection(): Closure
     {
         return function ($models, $attributesKeys) {
