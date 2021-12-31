@@ -21,7 +21,7 @@ trait JsonApiResource
             ->attributes($this->filterAttributes($this->toJsonApi()))
             ->relationshipLinks($this->getRelationshipLinks())
             ->links([
-                'self' => route('api.v1.'.$this->getResourceType().'.show', $this->resource)
+                'self' => route('api.v1.' . $this->getResourceType() . '.show', $this->resource)
             ])->get('data');
     }
 
@@ -39,7 +39,7 @@ trait JsonApiResource
     {
         $response->header(
             'Location',
-            route('api.v1.'.$this->getResourceType().'.show', $this->resource)
+            route('api.v1.' . $this->getResourceType() . '.show', $this->resource)
         );
     }
 
@@ -50,7 +50,7 @@ trait JsonApiResource
                 return true;
             }
 
-            $fields = explode(',', request('fields.'.$this->getResourceType()));
+            $fields = explode(',', request('fields.' . $this->getResourceType()));
 
             if ($value === $this->getRouteKey()) {
                 return in_array($this->getRouteKeyName(), $fields);
@@ -60,11 +60,19 @@ trait JsonApiResource
         });
     }
 
-    public static function collection($resource): AnonymousResourceCollection
+    public static function collection($resources): AnonymousResourceCollection
     {
-        $collection = parent::collection($resource);
+        $collection = parent::collection($resources);
 
-        $collection->with['links'] = ['self' => $resource->path()];
+        if (request()->filled('include')) {
+            foreach ($resources as $resource) {
+                foreach ($resource->getIncludes() as $include) {
+                    $collection->with['included'][] = $include;
+                }
+            }
+        }
+
+        $collection->with['links'] = ['self' => $resources->path()];
 
         return $collection;
     }
