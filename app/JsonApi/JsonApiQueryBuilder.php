@@ -46,6 +46,26 @@ class JsonApiQueryBuilder
         };
     }
 
+    public function allowedIncludes(): Closure
+    {
+        /** @var Builder $this */
+        return function ($allowedIncludes) {
+            if (request()->isNotFilled('include')) {
+                return $this;
+            }
+
+            $includes = explode(',', request()->input('include'));
+
+            foreach ($includes as $include) {
+                abort_unless(in_array($include, $allowedIncludes), 400);
+
+                $this->with($include);
+            }
+
+            return $this;
+        };
+    }
+
     public function sparseFieldset(): Closure
     {
         return function () {
