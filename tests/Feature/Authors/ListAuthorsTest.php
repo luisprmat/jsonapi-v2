@@ -4,6 +4,7 @@ namespace Tests\Feature\Authors;
 
 use Tests\TestCase;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ListAuthorsTest extends TestCase
@@ -20,6 +21,11 @@ class ListAuthorsTest extends TestCase
         $response->assertJsonApiResource($author, [
             'name' => $author->name
         ]);
+
+        $this->assertTrue(
+            Str::isUuid($response->json('data.id')),
+            "The authors 'id' must be a UUID."
+        );
     }
 
     /** @test */
