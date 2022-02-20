@@ -17,3 +17,9 @@ Route::get('articles/{article}/relationships/category', fn() => 'TODO')
 
 Route::get('articles/{article}/category', fn() => 'TODO')
     ->name('articles.category');
+
+Route::get('articles/{article}/relationships/author', fn() => 'TODO')
+    ->name('articles.relationships.author');
+
+Route::get('articles/{article}/author', fn() => 'TODO')
+    ->name('articles.author');
