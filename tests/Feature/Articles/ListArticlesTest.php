@@ -36,4 +36,20 @@ class ListArticlesTest extends TestCase
             'title', 'slug', 'content'
         ]);
     }
+
+    /** @test */
+    public function it_returns_a_json_api_error_object_when_an_article_is_not_found()
+    {
+        $response = $this->getJson(route('api.v1.articles.show', 'not-existing'));
+
+        $response->assertJsonStructure([
+            'errors' => [
+                '*' => []
+            ]
+        ])->assertJsonFragment([
+            'title' => 'Not Found',
+            'detail' => "No records found with the id 'not-existing' in the 'articles' resource.",
+            'status' => '404'
+        ])->assertNotFound();
+    }
 }
