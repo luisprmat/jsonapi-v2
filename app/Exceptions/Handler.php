@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Validation\ValidationException;
 use App\Http\Responses\JsonApiValidationErrorResponse;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
@@ -38,6 +39,10 @@ class Handler extends ExceptionHandler
     {
         $this->renderable(function (NotFoundHttpException $e) {
             throw new JsonApi\NotFoundHttpException();
+        });
+
+        $this->renderable(function (BadRequestHttpException $e) {
+            throw new JsonApi\BadRequestHttpException($e->getMessage());
         });
     }
 

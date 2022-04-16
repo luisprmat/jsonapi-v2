@@ -157,6 +157,10 @@ class FilterArticlesTest extends TestCase
             ]
         ]);
 
-        $this->getJson($url)->assertStatus(400);
+        $this->getJson($url)->assertJsonApiError(
+            title: 'Bad Request',
+            detail: "The filter 'unknown' is not allowed in the 'articles' resource",
+            status: '400'
+        );
     }
 }
