@@ -4,6 +4,7 @@ namespace Tests\Feature\Articles;
 
 use Tests\TestCase;
 use App\Models\Article;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 
@@ -25,9 +26,10 @@ class UpdateArticleTest extends TestCase
     }
 
     /** @test */
-    public function can_update_articles()
+    public function can_update_owned_articles()
     {
         $article = Article::factory()->create();
+
         Sanctum::actingAs($article->author);
 
         $response = $this->patchJson(route('api.v1.articles.update', $article), [
@@ -41,6 +43,20 @@ class UpdateArticleTest extends TestCase
             'slug' => $article->slug,
             'content' => 'Updated content',
         ]);
+    }
+
+    /** @test */
+    public function cannot_update_articles_owned_by_other_users()
+    {
+        $article = Article::factory()->create();
+
+        Sanctum::actingAs(User::factory()->create());
+
+        $response = $this->patchJson(route('api.v1.articles.update', $article), [
+            'title' => 'Updated Article',
+            'slug' => $article->slug,
+            'content' => 'Updated content',
+        ])->assertForbidden();
     }
 
     /** @test */
