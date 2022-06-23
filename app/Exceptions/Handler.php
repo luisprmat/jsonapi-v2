@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
 use App\Http\Responses\JsonApiValidationErrorResponse;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -44,6 +45,10 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (BadRequestHttpException $e) {
             throw new JsonApi\BadRequestHttpException($e->getMessage());
+        });
+
+        $this->renderable(function (AuthenticationException $e) {
+            throw new JsonApi\AuthenticationException();
         });
     }
 

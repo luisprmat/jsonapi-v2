@@ -17,9 +17,11 @@ class UpdateArticleTest extends TestCase
         $article = Article::factory()->create();
 
         $response = $this->patchJson(route('api.v1.articles.update', $article))
-            ->assertUnauthorized();
-
-        // $response->assertJsonApiError();
+            ->assertJsonApiError(
+                title: 'Unauthenticated',
+                detail: 'This action requires authentication.',
+                status: '401'
+            );
     }
 
     /** @test */

@@ -17,7 +17,11 @@ class DeleteArticleTest extends TestCase
         $article = Article::factory()->create();
 
         $this->deleteJson(route('api.v1.articles.destroy', $article))
-            ->assertUnauthorized();
+            ->assertJsonApiError(
+                title: 'Unauthenticated',
+                detail: 'This action requires authentication.',
+                status: '401'
+            );
     }
 
     /** @test */
