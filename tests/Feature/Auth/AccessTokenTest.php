@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -27,6 +28,33 @@ class AccessTokenTest extends TestCase
         $dbToken = PersonalAccessToken::findToken($token);
 
         $this->assertTrue($dbToken->tokenable->is($user));
+    }
+
+    /** @test */
+    public function users_permissions_are_assigned_to_the_token()
+    {
+        $this->withoutJsonApiDocumentFormatting();
+
+        $user = User::factory()->create();
+
+        $permission1 = Permission::factory()->create();
+        $permission2 = Permission::factory()->create();
+        $permission3 = Permission::factory()->create();
+
+        $user->givePermissionTo($permission1);
+        $user->givePermissionTo($permission2);
+
+        $data = $this->validCredentials(['email' => $user->email]);
+
+        $response = $this->postJson(route('api.v1.login'), $data);
+
+        $token = $response->json('plain-text-token');
+
+        $dbToken = PersonalAccessToken::findToken($token);
+
+        $this->assertTrue($dbToken->can($permission1->name));
+        $this->assertTrue($dbToken->can($permission2->name));
+        $this->assertFalse($dbToken->can($permission3->name));
     }
 
     /** @test */
