@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\PersonalAccessToken;
 use Tests\TestCase;
 
-class AccessTokenTest extends TestCase
+class LoginTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -28,6 +28,21 @@ class AccessTokenTest extends TestCase
         $dbToken = PersonalAccessToken::findToken($token);
 
         $this->assertTrue($dbToken->tokenable->is($user));
+    }
+
+    /** @test */
+    public function only_one_access_token_can_be_issued_at_a_time()
+    {
+        $user = User::factory()->create();
+
+        $accessToken = $user->createToken($user->name)->plainTextToken;
+
+        $this->withHeader('Authorization', 'Bearer '.$accessToken)
+            ->postJson(route('api.v1.login'))
+            ->assertNoContent()
+        ;
+
+        $this->assertCount(1, $user->tokens);
     }
 
     /** @test */
