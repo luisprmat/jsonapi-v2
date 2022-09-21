@@ -95,7 +95,7 @@ class AccessTokenTest extends TestCase
 
         $response = $this->postJson(route('api.v1.login'), $data);
 
-        $response->assertJsonValidationErrors(['email' => 'required']);
+        $response->assertJsonValidationErrors(['email' => __('has.required')]);
     }
 
     /** @test */
@@ -107,7 +107,7 @@ class AccessTokenTest extends TestCase
 
         $response = $this->postJson(route('api.v1.login'), $data);
 
-        $response->assertJsonValidationErrors(['email' => 'email']);
+        $response->assertJsonValidationErrors(['email' => __('has.email')]);
     }
 
     /** @test */
@@ -119,7 +119,7 @@ class AccessTokenTest extends TestCase
 
         $response = $this->postJson(route('api.v1.login'), $data);
 
-        $response->assertJsonValidationErrors(['password' => 'required']);
+        $response->assertJsonValidationErrors(['password' => __('has.required')]);
     }
 
     /** @test */
@@ -131,7 +131,7 @@ class AccessTokenTest extends TestCase
 
         $response = $this->postJson(route('api.v1.login'), $data);
 
-        $response->assertJsonValidationErrors(['device_name' => 'required']);
+        $response->assertJsonValidationErrors(['device_name' => __('has.required')]);
     }
 
     protected function validCredentials(mixed $overrides = []): array
