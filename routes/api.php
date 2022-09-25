@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\LogoutController;
 use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\RegisterController;
 use App\Http\Middleware\ValidateJsonApiDocument;
 use App\Http\Controllers\Api\ArticleAuthorController;
 use App\Http\Controllers\Api\ArticleCategoryController;
@@ -48,3 +49,7 @@ Route::withoutMiddleware(ValidateJsonApiDocument::class)
 Route::withoutMiddleware(ValidateJsonApiDocument::class)
     ->post('logout', LogoutController::class)
     ->name('logout');
+
+Route::withoutMiddleware(ValidateJsonApiDocument::class)
+    ->post('register', RegisterController::class)
+    ->name('register');
