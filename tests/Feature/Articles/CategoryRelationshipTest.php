@@ -58,8 +58,6 @@ class CategoryRelationshipTest extends TestCase
 
         $url = route('api.v1.articles.relationships.category', $article);
 
-        $this->withoutJsonApiDocumentFormatting();
-
         $response = $this->patchJson($url, [
             'data' => [
                 'type' => 'categories',
@@ -86,8 +84,6 @@ class CategoryRelationshipTest extends TestCase
         $article = Article::factory()->create();
 
         $url = route('api.v1.articles.relationships.category', $article);
-
-        $this->withoutJsonApiDocumentFormatting();
 
         $this->patchJson($url, [
             'data' => [

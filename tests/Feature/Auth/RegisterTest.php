@@ -17,7 +17,7 @@ class RegisterTest extends TestCase
     {
         parent::setUp();
 
-        $this->withoutJsonApiDocumentFormatting();
+        $this->withoutJsonApiHelpers();
     }
 
     /** @test */

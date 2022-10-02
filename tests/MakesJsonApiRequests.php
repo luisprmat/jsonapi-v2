@@ -11,35 +11,48 @@ use PHPUnit\Framework\ExpectationFailedException;
 trait MakesJsonApiRequests
 {
     protected bool $formatJsonApiDocument = true;
+    protected bool $addJsonApiHeaders = true;
 
-    public function withoutJsonApiDocumentFormatting()
+    public function withoutJsonApiHeaders(): self
+    {
+        $this->addJsonApiHeaders = false;
+
+        return $this;
+    }
+
+    public function withoutJsonApiDocumentFormatting(): self
     {
         $this->formatJsonApiDocument = false;
+
+        return $this;
+    }
+
+    public function withoutJsonApiHelpers(): self
+    {
+        $this->addJsonApiHeaders = false;
+
+        $this->formatJsonApiDocument = false;
+
+        return $this;
     }
 
     public function json($method, $uri, array $data = [], array $headers = []): TestResponse
     {
-        $headers['accept'] = 'application/vnd.api+json';
+        if($this->addJsonApiHeaders) {
+            $headers['accept'] = 'application/vnd.api+json';
+
+            if ($method === 'POST' || $method === 'PATCH') {
+                $headers['content-type'] = 'application/vnd.api+json';
+            }
+        }
 
         if ($this->formatJsonApiDocument) {
-            $formattedData = $this->getFormattedData($uri, $data);
+            if(! isset($data['data']) ) {
+                $formattedData = $this->getFormattedData($uri, $data);
+            }
         }
 
         return parent::json($method, $uri, $formattedData ?? $data, $headers);
-    }
-
-    public function postJson($uri, array $data = [], array $headers = []): TestResponse
-    {
-        $headers['content-type'] = 'application/vnd.api+json';
-
-        return parent::postJson($uri, $data, $headers);
-    }
-
-    public function patchJson($uri, array $data = [], array $headers = []): TestResponse
-    {
-        $headers['content-type'] = 'application/vnd.api+json';
-
-        return parent::patchJson($uri, $data, $headers);
     }
 
     /**

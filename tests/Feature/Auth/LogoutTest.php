@@ -12,6 +12,13 @@ class LogoutTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->withoutJsonApiHelpers();
+    }
+
     /** @test */
     public function can_logout()
     {
