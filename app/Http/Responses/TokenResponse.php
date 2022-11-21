@@ -20,7 +20,7 @@ class TokenResponse implements Responsable
         )->plainTextToken;
 
         return response()->json([
-            'plain-text-token' => $plainTextToken
+            'plain-text-token' => $plainTextToken,
         ]);
     }
 }

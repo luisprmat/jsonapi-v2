@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Articles;
 
+use Tests\TestCase;
 use App\Models\Article;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
 class IncludeAuthorTest extends TestCase
 {
@@ -18,7 +18,7 @@ class IncludeAuthorTest extends TestCase
         // articles/the-slug?include=author
         $url = route('api.v1.articles.show', [
             'article' => $article,
-            'include' => 'author'
+            'include' => 'author',
         ]);
 
         $this->getJson($url)->assertJson([
@@ -27,10 +27,10 @@ class IncludeAuthorTest extends TestCase
                     'type' => 'authors',
                     'id' => $article->author->getRouteKey(),
                     'attributes' => [
-                        'name' => $article->author->name
-                    ]
-                ]
-            ]
+                        'name' => $article->author->name,
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -42,7 +42,7 @@ class IncludeAuthorTest extends TestCase
 
         // articles?include=author
         $url = route('api.v1.articles.index', [
-            'include' => 'author'
+            'include' => 'author',
         ]);
 
         $this->getJson($url)->assertJson([
@@ -51,16 +51,16 @@ class IncludeAuthorTest extends TestCase
                     'type' => 'authors',
                     'id' => $article->author->getRouteKey(),
                     'attributes' => [
-                        'name' => $article->author->name
-                    ]
+                        'name' => $article->author->name,
+                    ],
                 ], [
                     'type' => 'authors',
                     'id' => $article2->author->getRouteKey(),
                     'attributes' => [
-                        'name' => $article2->author->name
-                    ]
-                ]
-            ]
+                        'name' => $article2->author->name,
+                    ],
+                ],
+            ],
         ]);
     }
 }

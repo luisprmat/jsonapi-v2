@@ -5,12 +5,11 @@ namespace Tests;
 use App\JsonApi\Document;
 use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
-use PHPUnit\Framework\Assert as PHPUnit;
-use PHPUnit\Framework\ExpectationFailedException;
 
 trait MakesJsonApiRequests
 {
     protected bool $formatJsonApiDocument = true;
+
     protected bool $addJsonApiHeaders = true;
 
     public function withoutJsonApiHeaders(): self
@@ -38,7 +37,7 @@ trait MakesJsonApiRequests
 
     public function json($method, $uri, array $data = [], array $headers = []): TestResponse
     {
-        if($this->addJsonApiHeaders) {
+        if ($this->addJsonApiHeaders) {
             $headers['accept'] = 'application/vnd.api+json';
 
             if ($method === 'POST' || $method === 'PATCH') {
@@ -47,7 +46,7 @@ trait MakesJsonApiRequests
         }
 
         if ($this->formatJsonApiDocument) {
-            if(! isset($data['data']) ) {
+            if (! isset($data['data'])) {
                 $formattedData = $this->getFormattedData($uri, $data);
             }
         }
@@ -57,7 +56,7 @@ trait MakesJsonApiRequests
 
     /**
      * @param $uri
-     * @param array $data
+     * @param  array  $data
      * @return array
      */
     protected function getFormattedData($uri, array $data): array

@@ -3,8 +3,8 @@
 namespace App\JsonApi;
 
 use Closure;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Str;
+use Illuminate\Database\Query\Builder;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class JsonApiQueryBuilder
@@ -44,7 +44,7 @@ class JsonApiQueryBuilder
 
                 $this->hasNamedScope($filter)
                     ? $this->{$filter}($value)
-                    : $this->where($filter, 'LIKE', '%' . $value . '%');
+                    : $this->where($filter, 'LIKE', '%'.$value.'%');
             }
 
             return $this;
@@ -81,11 +81,11 @@ class JsonApiQueryBuilder
                 return $this;
             }
 
-            $fields = explode(',', request('fields.' . $this->getResourceType()));
+            $fields = explode(',', request('fields.'.$this->getResourceType()));
 
             $routeKeyName = $this->model->getRouteKeyName();
 
-            if (!in_array($routeKeyName, $fields)) {
+            if (! in_array($routeKeyName, $fields)) {
                 $fields[] = $routeKeyName;
             }
 

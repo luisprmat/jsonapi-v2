@@ -9,9 +9,8 @@ class JsonApiRequest
 {
     public function isJsonApi(): Closure
     {
-        return function() {
+        return function () {
             /** @var Request $this */
-
             if ($this->header('accept') === 'application/vnd.api+json') {
                 return true;
             }
@@ -22,7 +21,7 @@ class JsonApiRequest
 
     public function validatedData(): Closure
     {
-        return function() {
+        return function () {
             /** @var Request $this */
             return $this->validated()['data'];
         };
@@ -30,7 +29,7 @@ class JsonApiRequest
 
     public function getAttributes(): Closure
     {
-        return function() {
+        return function () {
             /** @var Request $this */
             return $this->validatedData()['attributes'];
         };
@@ -54,7 +53,7 @@ class JsonApiRequest
 
     public function hasRelationship(): Closure
     {
-        return function($relation) {
+        return function ($relation) {
             /** @var Request $this */
             return $this->hasRelationships()
                 && isset($this->validatedData()['relationships'][$relation]);

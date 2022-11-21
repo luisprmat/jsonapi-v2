@@ -1,18 +1,18 @@
 <?php
 
-use Blueprint\Generators\ControllerGenerator;
-use Blueprint\Generators\MigrationGenerator;
+use Blueprint\Generators\TestGenerator;
 use Blueprint\Generators\ModelGenerator;
 use Blueprint\Generators\RouteGenerator;
 use Blueprint\Generators\SeederGenerator;
-use Blueprint\Generators\Statements\EventGenerator;
-use Blueprint\Generators\Statements\FormRequestGenerator;
+use Blueprint\Generators\MigrationGenerator;
+use Blueprint\Generators\ControllerGenerator;
 use Blueprint\Generators\Statements\JobGenerator;
 use Blueprint\Generators\Statements\MailGenerator;
-use Blueprint\Generators\Statements\NotificationGenerator;
-use Blueprint\Generators\Statements\ResourceGenerator;
 use Blueprint\Generators\Statements\ViewGenerator;
-use Blueprint\Generators\TestGenerator;
+use Blueprint\Generators\Statements\EventGenerator;
+use Blueprint\Generators\Statements\ResourceGenerator;
+use Blueprint\Generators\Statements\FormRequestGenerator;
+use Blueprint\Generators\Statements\NotificationGenerator;
 
 return [
 
@@ -29,7 +29,6 @@ return [
     */
     'namespace' => 'App',
 
-
     /*
     |--------------------------------------------------------------------------
     | Component Namespaces
@@ -43,7 +42,6 @@ return [
     */
     'models_namespace' => 'Models',
     'controllers_namespace' => 'Http\\Controllers',
-
 
     /*
     |--------------------------------------------------------------------------
@@ -88,7 +86,6 @@ return [
 
     'on_delete' => 'cascade',
     'on_update' => 'cascade',
-
 
     /*
     |--------------------------------------------------------------------------

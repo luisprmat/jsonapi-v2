@@ -54,7 +54,7 @@ class Handler extends ExceptionHandler
 
     protected function invalidJson($request, ValidationException $exception): JsonResponse
     {
-        if($request->isJsonApi()) {
+        if ($request->isJsonApi()) {
             return new JsonApiValidationErrorResponse($exception);
         }
 

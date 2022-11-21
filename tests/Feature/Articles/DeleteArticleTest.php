@@ -3,8 +3,8 @@
 namespace Tests\Feature\Articles;
 
 use Tests\TestCase;
-use App\Models\Article;
 use App\Models\User;
+use App\Models\Article;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

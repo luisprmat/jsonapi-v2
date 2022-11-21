@@ -28,7 +28,7 @@ class ValidateJsonApiHeaders
         }
 
         return $next($request)->withHeaders([
-            'content-type' => 'application/vnd.api+json'
+            'content-type' => 'application/vnd.api+json',
         ]);
     }
 }

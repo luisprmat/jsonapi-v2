@@ -10,8 +10,8 @@ class Document extends Collection
     {
         return new self([
             'data' => [
-                'type' => $type
-            ]
+                'type' => $type,
+            ],
         ]);
     }
 
@@ -45,7 +45,7 @@ class Document extends Collection
         foreach ($relationships as $key => $relationship) {
             $this->items['data']['relationships'][$key]['data'] = [
                 'type' => $relationship->getResourceType(),
-                'id' => $relationship->getRouteKey()
+                'id' => $relationship->getRouteKey(),
             ];
         }
 
@@ -63,7 +63,7 @@ class Document extends Collection
                 'related' => route(
                     "api.v1.{$this->items['data']['type']}.{$key}",
                     $this->items['data']['id']
-                )
+                ),
             ];
         }
 

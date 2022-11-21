@@ -21,24 +21,27 @@ class Slug implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param string $attribute
-     * @param mixed $value
+     * @param  string  $attribute
+     * @param  mixed  $value
      * @return bool
      */
     public function passes($attribute, $value): bool
     {
         if ($this->hasUnderscores($value)) {
             $this->message = __('validation.no_underscores');
+
             return false;
         }
 
         if ($this->startsWithDashes($value)) {
             $this->message = __('validation.no_starting_dashes');
+
             return false;
         }
 
         if ($this->endsWithDashes($value)) {
             $this->message = __('validation.no_ending_dashes');
+
             return false;
         }
 

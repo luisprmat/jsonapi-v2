@@ -14,7 +14,7 @@ class ArticleResource extends JsonResource
         return [
             'title' => $this->resource->title,
             'slug' => $this->resource->slug,
-            'content' => $this->resource->content
+            'content' => $this->resource->content,
         ];
     }
 
@@ -27,7 +27,7 @@ class ArticleResource extends JsonResource
     {
         return [
             CategoryResource::make($this->whenLoaded('category')),
-            AuthorResource::make($this->whenLoaded('author'))
+            AuthorResource::make($this->whenLoaded('author')),
         ];
     }
 }

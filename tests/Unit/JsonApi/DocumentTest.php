@@ -21,7 +21,7 @@ class DocumentTest extends TestCase
             ->attributes([
                 'title' => 'Article title',
             ])->relationshipData([
-                'category' => $category
+                'category' => $category,
             ])->toArray();
 
         $expected = [
@@ -29,17 +29,17 @@ class DocumentTest extends TestCase
                 'type' => 'articles',
                 'id' => 'article-id',
                 'attributes' => [
-                    'title' => 'Article title'
+                    'title' => 'Article title',
                 ],
                 'relationships' => [
                     'category' => [
                         'data' => [
                             'type' => 'categories',
-                            'id' => 'category-id'
-                        ]
-                    ]
-                ]
-            ]
+                            'id' => 'category-id',
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $this->assertEquals($expected, $document);

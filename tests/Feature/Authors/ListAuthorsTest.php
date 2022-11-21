@@ -19,7 +19,7 @@ class ListAuthorsTest extends TestCase
         $response = $this->getJson(route('api.v1.authors.show', $author));
 
         $response->assertJsonApiResource($author, [
-            'name' => $author->name
+            'name' => $author->name,
         ]);
 
         $this->assertTrue(
@@ -29,14 +29,14 @@ class ListAuthorsTest extends TestCase
     }
 
     /** @test */
-    function can_fetch_all_authors()
+    public function can_fetch_all_authors()
     {
         $authors = User::factory()->count(3)->create();
 
         $response = $this->getJson(route('api.v1.authors.index'));
 
         $response->assertJsonApiResourceCollection($authors, [
-            'name'
+            'name',
         ]);
     }
 }

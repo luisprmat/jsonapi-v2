@@ -13,9 +13,9 @@ class BadRequestHttpException extends Exception
                 [
                     'title' => 'Bad Request',
                     'detail' => $this->getMessage(),
-                    'status' => '400'
-                ]
-            ]
+                    'status' => '400',
+                ],
+            ],
         ], 400);
     }
 }

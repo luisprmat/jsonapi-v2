@@ -12,7 +12,7 @@ class CategoryResource extends JsonResource
     public function toJsonApi(): array
     {
         return [
-            'name' => $this->resource->name
+            'name' => $this->resource->name,
         ];
     }
 }

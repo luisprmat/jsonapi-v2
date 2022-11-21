@@ -2,10 +2,9 @@
 
 namespace Tests\Feature\Articles;
 
+use Tests\TestCase;
 use App\Models\Article;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 
 class ListArticlesTest extends TestCase
 {
@@ -21,19 +20,19 @@ class ListArticlesTest extends TestCase
         $response->assertJsonApiResource($article, [
             'title' => $article->title,
             'slug' => $article->slug,
-            'content' => $article->content
+            'content' => $article->content,
         ])->assertJsonApiRelationshipLinks($article, ['category', 'author']);
     }
 
     /** @test */
-    function can_fetch_all_articles()
+    public function can_fetch_all_articles()
     {
         $articles = Article::factory()->count(3)->create();
 
         $response = $this->getJson(route('api.v1.articles.index'));
 
         $response->assertJsonApiResourceCollection($articles, [
-            'title', 'slug', 'content'
+            'title', 'slug', 'content',
         ]);
     }
 

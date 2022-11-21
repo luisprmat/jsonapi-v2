@@ -2,10 +2,9 @@
 
 namespace Tests\Feature\Articles;
 
+use Tests\TestCase;
 use App\Models\Article;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 
 class SortArticlesTest extends TestCase
 {
@@ -84,15 +83,15 @@ class SortArticlesTest extends TestCase
     {
         Article::factory()->create([
             'title' => 'A title',
-            'content' => 'A content'
+            'content' => 'A content',
         ]);
         Article::factory()->create([
             'title' => 'B title',
-            'content' => 'B content'
+            'content' => 'B content',
         ]);
         Article::factory()->create([
             'title' => 'A title',
-            'content' => 'C content'
+            'content' => 'C content',
         ]);
 
         // /articles?sort=title,-content

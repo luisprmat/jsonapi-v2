@@ -2,18 +2,17 @@
 
 namespace Tests\Feature\Articles;
 
+use Tests\TestCase;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 
 class CategoryRelationshipTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    function can_fetch_the_associated_category_identifier()
+    public function can_fetch_the_associated_category_identifier()
     {
         $article = Article::factory()->create();
 
@@ -24,13 +23,13 @@ class CategoryRelationshipTest extends TestCase
         $response->assertExactJson([
             'data' => [
                 'id' => $article->category->getRouteKey(),
-                'type' => 'categories'
-            ]
+                'type' => 'categories',
+            ],
         ]);
     }
 
     /** @test */
-    function can_fetch_the_associated_category_resource()
+    public function can_fetch_the_associated_category_resource()
     {
         $article = Article::factory()->create();
 
@@ -43,14 +42,14 @@ class CategoryRelationshipTest extends TestCase
                 'id' => $article->category->getRouteKey(),
                 'type' => 'categories',
                 'attributes' => [
-                    'name' => $article->category->name
-                ]
-            ]
+                    'name' => $article->category->name,
+                ],
+            ],
         ]);
     }
 
     /** @test  */
-    function can_update_the_associated_category()
+    public function can_update_the_associated_category()
     {
         $category = Category::factory()->create();
 
@@ -61,25 +60,25 @@ class CategoryRelationshipTest extends TestCase
         $response = $this->patchJson($url, [
             'data' => [
                 'type' => 'categories',
-                'id' => $category->getRouteKey()
-            ]
+                'id' => $category->getRouteKey(),
+            ],
         ]);
 
         $response->assertExactJson([
             'data' => [
                 'type' => 'categories',
-                'id' => $category->getRouteKey()
-            ]
+                'id' => $category->getRouteKey(),
+            ],
         ]);
 
         $this->assertDatabaseHas('articles', [
             'title' => $article->title,
-            'category_id' => $category->id
+            'category_id' => $category->id,
         ]);
     }
 
     /** @test  */
-    function category_must_exist_in_database()
+    public function category_must_exist_in_database()
     {
         $article = Article::factory()->create();
 
@@ -88,13 +87,13 @@ class CategoryRelationshipTest extends TestCase
         $this->patchJson($url, [
             'data' => [
                 'type' => 'categories',
-                'id' => 'non-existing'
-            ]
+                'id' => 'non-existing',
+            ],
         ])->assertJsonApiValidationErrors('data.id');
 
         $this->assertDatabaseHas('articles', [
             'title' => $article->title,
-            'category_id' => $article->category_id
+            'category_id' => $article->category_id,
         ]);
     }
 }

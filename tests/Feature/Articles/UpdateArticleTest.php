@@ -3,11 +3,11 @@
 namespace Tests\Feature\Articles;
 
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Article;
 use App\Models\Category;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UpdateArticleTest extends TestCase
 {
@@ -59,8 +59,8 @@ class UpdateArticleTest extends TestCase
             'slug' => $article->slug,
             'content' => 'Updated content',
             '_relationships' => [
-                'category' => $category
-            ]
+                'category' => $category,
+            ],
         ])->assertOk();
 
         $response->assertJsonApiResource($article, [
@@ -71,7 +71,7 @@ class UpdateArticleTest extends TestCase
 
         $this->assertDatabaseHas('articles', [
             'title' => 'Updated Article',
-            'category_id' => $category->id
+            'category_id' => $category->id,
         ]);
     }
 
@@ -170,7 +170,7 @@ class UpdateArticleTest extends TestCase
             'slug' => 'with_underscores',
             'content' => 'Content of the Article',
         ])->assertSee(__('validation.no_underscores', [
-                'attribute' => 'data.attributes.slug']
+            'attribute' => 'data.attributes.slug', ]
         ))->assertJsonApiValidationErrors('slug');
     }
 
@@ -186,7 +186,7 @@ class UpdateArticleTest extends TestCase
             'slug' => '-start-with-dashes',
             'content' => 'Content of the Article',
         ])->assertSee(__('validation.no_starting_dashes', [
-                'attribute' => 'data.attributes.slug']
+            'attribute' => 'data.attributes.slug', ]
         ))->assertJsonApiValidationErrors('slug');
     }
 
@@ -202,7 +202,7 @@ class UpdateArticleTest extends TestCase
             'slug' => 'end-with-dashes-',
             'content' => 'Content of the Article',
         ])->assertSee(__('validation.no_ending_dashes', [
-                'attribute' => 'data.attributes.slug']
+            'attribute' => 'data.attributes.slug', ]
         ))->assertJsonApiValidationErrors('slug');
     }
 

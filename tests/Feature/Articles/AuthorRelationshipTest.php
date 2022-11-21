@@ -2,19 +2,17 @@
 
 namespace Tests\Feature\Articles;
 
-use App\Models\Article;
-use App\Models\Category;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\User;
+use App\Models\Article;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AuthorRelationshipTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    function can_fetch_the_associated_author_identifier()
+    public function can_fetch_the_associated_author_identifier()
     {
         $article = Article::factory()->create();
 
@@ -25,13 +23,13 @@ class AuthorRelationshipTest extends TestCase
         $response->assertExactJson([
             'data' => [
                 'id' => $article->author->getRouteKey(),
-                'type' => 'authors'
-            ]
+                'type' => 'authors',
+            ],
         ]);
     }
 
     /** @test */
-    function can_fetch_the_associated_author_resource()
+    public function can_fetch_the_associated_author_resource()
     {
         $article = Article::factory()->create();
 
@@ -44,14 +42,14 @@ class AuthorRelationshipTest extends TestCase
                 'id' => $article->author->getRouteKey(),
                 'type' => 'authors',
                 'attributes' => [
-                    'name' => $article->author->name
-                ]
-            ]
+                    'name' => $article->author->name,
+                ],
+            ],
         ]);
     }
 
     /** @test  */
-    function can_update_the_associated_author()
+    public function can_update_the_associated_author()
     {
         $author = User::factory()->create();
 
@@ -62,25 +60,25 @@ class AuthorRelationshipTest extends TestCase
         $response = $this->patchJson($url, [
             'data' => [
                 'type' => 'authors',
-                'id' => $author->getRouteKey()
-            ]
+                'id' => $author->getRouteKey(),
+            ],
         ]);
 
         $response->assertExactJson([
             'data' => [
                 'type' => 'authors',
-                'id' => $author->getRouteKey()
-            ]
+                'id' => $author->getRouteKey(),
+            ],
         ]);
 
         $this->assertDatabaseHas('articles', [
             'title' => $article->title,
-            'user_id' => $author->id
+            'user_id' => $author->id,
         ]);
     }
 
     /** @test  */
-    function author_must_exist_in_database()
+    public function author_must_exist_in_database()
     {
         $article = Article::factory()->create();
 
@@ -89,13 +87,13 @@ class AuthorRelationshipTest extends TestCase
         $this->patchJson($url, [
             'data' => [
                 'type' => 'authors',
-                'id' => 'non-existing'
-            ]
+                'id' => 'non-existing',
+            ],
         ])->assertJsonApiValidationErrors('data.id');
 
         $this->assertDatabaseHas('articles', [
             'title' => $article->title,
-            'user_id' => $article->user_id
+            'user_id' => $article->user_id,
         ]);
     }
 }
