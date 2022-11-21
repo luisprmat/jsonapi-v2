@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
 use App\Http\Requests\SaveArticleRequest;
+use App\Models\Category;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -37,7 +38,19 @@ class ArticleController extends Controller
     {
         $this->authorize('create', new Article);
 
-        $article = Article::create($request->validated());
+        $data = $request->validated()['data'];
+
+        $articleData = $data['attributes'];
+
+        $articleData['user_id'] = $data['relationships']['author']['data']['id'];
+
+        $categorySlug = $data['relationships']['category']['data']['id'];
+
+        $category = Category::whereSlug($categorySlug)->first();
+
+        $articleData['category_id'] = $category->id;
+
+        $article = Article::create($articleData);
 
         return ArticleResource::make($article);
     }
@@ -56,7 +69,25 @@ class ArticleController extends Controller
     {
         $this->authorize('update', $article);
 
-        $article->update($request->validated());
+        $data = $request->validated()['data'];
+
+        $articleData = $data['attributes'];
+
+        if (isset($articleData['relationships'])) {
+            if (isset($articleData['relationships']['author'])) {
+                $articleData['user_id'] = $data['relationships']['author']['data']['id'];
+            }
+
+            if (isset($articleData['relationships']['category'])) {
+                $categorySlug = $data['relationships']['category']['data']['id'];
+
+                $category = Category::whereSlug($categorySlug)->first();
+
+                $articleData['category_id'] = $category->id;
+            }
+        }
+
+        $article->update($articleData);
 
         return ArticleResource::make($article);
     }
