@@ -38,13 +38,11 @@ class ArticleController extends Controller
     {
         $this->authorize('create', new Article);
 
-        $data = $request->validated()['data'];
+        $articleData = $request->getAttributes();
 
-        $articleData = $data['attributes'];
+        $articleData['user_id'] = $request->getRelationshipId('author');
 
-        $articleData['user_id'] = $data['relationships']['author']['data']['id'];
-
-        $categorySlug = $data['relationships']['category']['data']['id'];
+        $categorySlug = $request->getRelationshipId('category');
 
         $category = Category::whereSlug($categorySlug)->first();
 
@@ -69,22 +67,18 @@ class ArticleController extends Controller
     {
         $this->authorize('update', $article);
 
-        $data = $request->validated()['data'];
+        $articleData = $request->getAttributes();
 
-        $articleData = $data['attributes'];
+        if ($request->hasRelationship('author')) {
+            $articleData['user_id'] = $request->getRelationshipId('author');
+        }
 
-        if (isset($articleData['relationships'])) {
-            if (isset($articleData['relationships']['author'])) {
-                $articleData['user_id'] = $data['relationships']['author']['data']['id'];
-            }
+        if ($request->hasRelationship('category')) {
+            $categorySlug = $request->getRelationshipId('category');
 
-            if (isset($articleData['relationships']['category'])) {
-                $categorySlug = $data['relationships']['category']['data']['id'];
+            $category = Category::whereSlug($categorySlug)->first();
 
-                $category = Category::whereSlug($categorySlug)->first();
-
-                $articleData['category_id'] = $category->id;
-            }
+            $articleData['category_id'] = $category->id;
         }
 
         $article->update($articleData);
