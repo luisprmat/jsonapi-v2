@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\LogoutController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Api\ArticleAuthorController;
 use App\Http\Controllers\Api\ArticleCategoryController;
 
 Route::apiResource('articles', ArticleController::class);
+Route::apiResource('comments', CommentController::class);
 Route::apiResource('categories', CategoryController::class)
     ->only('index', 'show');
 
