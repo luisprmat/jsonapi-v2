@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\LogoutController;
 use App\Http\Controllers\Api\ArticleController;
+use App\Http\Controllers\Api\CommentController;
 use App\Http\Middleware\ValidateJsonApiHeaders;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\RegisterController;
