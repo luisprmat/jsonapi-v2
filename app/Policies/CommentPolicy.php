@@ -51,14 +51,10 @@ class CommentPolicy
 
     /**
      * Determine whether the user can delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Comment $comment)
+    public function delete(User $user, Comment $comment): Response|bool
     {
-        //
+        return $user->is($comment->author) && $user->tokenCan('comment:delete');
     }
 
     /**
