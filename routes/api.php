@@ -11,10 +11,24 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Middleware\ValidateJsonApiDocument;
 use App\Http\Controllers\Api\ArticleAuthorController;
+use App\Http\Controllers\Api\CommentArticleController;
 use App\Http\Controllers\Api\ArticleCategoryController;
 
 Route::apiResource('articles', ArticleController::class);
 Route::apiResource('comments', CommentController::class);
+
+Route::get('comments/{comment}/relationships/article', [
+    CommentArticleController::class, 'index',
+])->name('comments.relationships.article');
+
+Route::get('comments/{comment}/article', [
+    CommentArticleController::class, 'show',
+])->name('comments.article');
+
+Route::patch('comments/{comment}/relationships/article', [
+    CommentArticleController::class, 'update',
+])->name('comments.relationships.article');
+
 Route::apiResource('categories', CategoryController::class)
     ->only('index', 'show');
 
@@ -27,7 +41,7 @@ Route::get('articles/{article}/relationships/category', [
 
 Route::patch('articles/{article}/relationships/category', [
     ArticleCategoryController::class, 'update',
-]);
+])->name('articles.relationships.category');
 
 Route::get('articles/{article}/category', [
     ArticleCategoryController::class, 'show',
