@@ -20,8 +20,10 @@ trait JsonApiResource
 
     public static function identifiers(Collection $resource)
     {
-        return Document::type($resource->first()->getResourceType())
-            ->ids($resource);
+        return $resource->isEmpty()
+            ? Document::empty()
+            : Document::type($resource->first()->getResourceType())
+                ->ids($resource);
     }
 
     public function toArray($request): array

@@ -15,6 +15,13 @@ class Document extends Collection
         ]);
     }
 
+    public static function empty(): array
+    {
+        return[
+            'data' => [],
+        ];
+    }
+
     public function id($id): Document
     {
         if ($id) {

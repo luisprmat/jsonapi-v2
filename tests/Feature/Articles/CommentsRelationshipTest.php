@@ -26,4 +26,20 @@ class CommentsRelationshipTest extends TestCase
             'type' => 'comments',
         ]));
     }
+
+    /** @test */
+    public function it_returns_an_empty_array_when_there_are_no_associared_comments()
+    {
+        $article = Article::factory()->create();
+
+        $url = route('api.v1.articles.relationships.comments', $article);
+
+        $response = $this->getJson($url);
+
+        $response->assertJsonCount(0, 'data');
+
+        $response->assertExactJson([
+            'data' => [],
+        ]);
+    }
 }
