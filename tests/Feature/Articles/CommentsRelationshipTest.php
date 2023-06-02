@@ -42,4 +42,33 @@ class CommentsRelationshipTest extends TestCase
             'data' => [],
         ]);
     }
+
+    /** @test */
+    public function can_fetch_the_associated_comments_resource()
+    {
+        $article = Article::factory()->hasComments(2)->create();
+
+        $url = route('api.v1.articles.comments', $article);
+
+        $response = $this->getJson($url);
+
+        $response->assertJson([
+            'data' => [
+                [
+                    'id' => $article->comments[0]->getRouteKey(),
+                    'type' => 'comments',
+                    'attributes' => [
+                        'body' => $article->comments[0]->body,
+                    ],
+                ],
+                [
+                    'id' => $article->comments[1]->getRouteKey(),
+                    'type' => 'comments',
+                    'attributes' => [
+                        'body' => $article->comments[1]->body,
+                    ],
+                ],
+            ],
+        ]);
+    }
 }

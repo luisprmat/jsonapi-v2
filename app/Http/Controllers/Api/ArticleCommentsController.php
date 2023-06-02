@@ -12,4 +12,9 @@ class ArticleCommentsController extends Controller
     {
         return CommentResource::identifiers($article->comments);
     }
+
+    public function show(Article $article)
+    {
+        return CommentResource::collection($article->comments);
+    }
 }
