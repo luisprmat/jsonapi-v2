@@ -45,6 +45,11 @@ class Article extends Model
         return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     public function scopeYear(Builder $query, $year)
     {
         $query->whereYear('created_at', $year);

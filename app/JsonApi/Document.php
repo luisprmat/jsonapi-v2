@@ -24,6 +24,16 @@ class Document extends Collection
         return $this;
     }
 
+    public function ids(Collection $resources): Document
+    {
+        $this->items['data'] = $resources->map(fn ($resource) => [
+            'id' => (string) $resource->getRouteKey(),
+            'type' => $resource->getResourceType(),
+        ]);
+
+        return $this;
+    }
+
     public function attributes(array $attributes): Document
     {
         unset($attributes['_relationships']);

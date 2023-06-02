@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\ArticleAuthorController;
 use App\Http\Controllers\Api\CommentAuthorController;
 use App\Http\Controllers\Api\CommentArticleController;
 use App\Http\Controllers\Api\ArticleCategoryController;
+use App\Http\Controllers\Api\ArticleCommentsController;
 
 Route::apiResource('articles', ArticleController::class);
 Route::apiResource('comments', CommentController::class);
@@ -64,6 +65,11 @@ Route::prefix('articles/{article}')->group(function () {
 
         Route::get('author', 'show')
             ->name('articles.author');
+    });
+
+    Route::controller(ArticleCommentsController::class)->group(function () {
+        Route::get('relationships/comments', 'index')
+            ->name('articles.relationships.comments');
     });
 });
 

@@ -3,6 +3,8 @@
 namespace App\JsonApi\Traits;
 
 use App\JsonApi\Document;
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\MissingValue;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -10,10 +12,16 @@ trait JsonApiResource
 {
     abstract public function toJsonApi(): array;
 
-    public static function identifier($resource)
+    public static function identifier(Model $resource)
     {
         return Document::type($resource->getResourceType())
             ->id($resource->getRouteKey());
+    }
+
+    public static function identifiers(Collection $resource)
+    {
+        return Document::type($resource->first()->getResourceType())
+            ->ids($resource);
     }
 
     public function toArray($request): array
