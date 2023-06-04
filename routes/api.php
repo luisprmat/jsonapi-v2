@@ -71,6 +71,8 @@ Route::prefix('articles/{article}')->group(function () {
         Route::get('relationships/comments', 'index')
             ->name('articles.relationships.comments');
 
+        Route::patch('relationships/comments', 'update');
+
         Route::get('comments', 'show')->name('articles.comments');
     });
 });
