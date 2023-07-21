@@ -24,7 +24,7 @@ class ArticleController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $articles = Article::query()
-            ->allowedIncludes(['category', 'author'])
+            ->allowedIncludes(['category', 'author', 'comments'])
             ->allowedFilters(['title', 'content', 'year', 'month', 'categories'])
             ->allowedSorts(['title', 'content'])
             ->sparseFieldset()
