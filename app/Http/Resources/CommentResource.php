@@ -15,4 +15,9 @@ class CommentResource extends JsonResource
             'body' => $this->resource->body,
         ];
     }
+
+    public function getRelationshipLinks(): array
+    {
+        return ['article', 'author'];
+    }
 }
