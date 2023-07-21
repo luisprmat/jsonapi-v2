@@ -29,7 +29,7 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->renderable(function (NotFoundHttpException $e) {
-            throw new JsonApi\NotFoundHttpException();
+            throw new JsonApi\NotFoundHttpException($e->getMessage());
         });
 
         $this->renderable(function (BadRequestHttpException $e) {

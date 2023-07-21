@@ -45,7 +45,7 @@ trait MakesJsonApiRequests
             }
         }
 
-        if ($this->formatJsonApiDocument) {
+        if ($this->formatJsonApiDocument && ($method === 'POST' || $method === 'PATCH')) {
             if (! isset($data['data'])) {
                 $formattedData = $this->getFormattedData($uri, $data);
             }
