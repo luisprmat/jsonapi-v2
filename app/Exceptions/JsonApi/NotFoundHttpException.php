@@ -8,28 +8,22 @@ class NotFoundHttpException extends Exception
 {
     public function render($request)
     {
-        $detail = $this->getMessage();
-
-        if (str($this->getMessage())->startsWith('No query results for model')) {
-            $type = $request->filled('data.type')
-             ? $request->input('data.type')
-             : (string) str($request->path())->after('api/v1/')->before('/');
-
-            $id = $request->filled('data.id')
-                ? $request->input('data.id')
-                : (string) str($request->path())->after($type)->replace('/', '');
-
-            if ($id && $type) {
-                $detail = "No records found with the id '{$id}' in the '{$type}' resource.";
-            }
-        }
-
         return response()->json([
             'errors' => [[
                 'title' => 'Not Found',
-                'detail' => $detail,
+                'detail' => $this->getDetail($request),
                 'status' => '404',
             ]],
         ], 404);
+    }
+
+    protected function getDetail($request): string
+    {
+        if (str($this->getMessage())->startsWith('No query results for model')) {
+            return "No records found with the id '{$request->getResourceId()}'".
+                " in the '{$request->getResourceType()}' resource.";
+        }
+
+        return $this->getMessage();
     }
 }
