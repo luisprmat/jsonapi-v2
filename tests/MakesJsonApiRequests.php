@@ -35,7 +35,7 @@ trait MakesJsonApiRequests
         return $this;
     }
 
-    public function json($method, $uri, array $data = [], array $headers = []): TestResponse
+    public function json($method, $uri, array $data = [], array $headers = [], $options = 0): TestResponse
     {
         if ($this->addJsonApiHeaders) {
             $headers['accept'] = 'application/vnd.api+json';
@@ -51,14 +51,9 @@ trait MakesJsonApiRequests
             }
         }
 
-        return parent::json($method, $uri, $formattedData ?? $data, $headers);
+        return parent::json($method, $uri, $formattedData ?? $data, $headers, $options);
     }
 
-    /**
-     * @param $uri
-     * @param  array  $data
-     * @return array
-     */
     protected function getFormattedData($uri, array $data): array
     {
         $path = parse_url($uri)['path'];

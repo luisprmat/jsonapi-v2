@@ -2,64 +2,32 @@
 
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class Slug implements Rule
+class Slug implements ValidationRule
 {
-    private string $message;
-
     /**
-     * Create a new rule instance.
+     * Run the validation rule.
      *
-     * @return void
+     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Determine if the validation rule passes.
-     *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @return bool
-     */
-    public function passes($attribute, $value): bool
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if ($this->hasUnderscores($value)) {
-            $this->message = __('validation.no_underscores');
-
-            return false;
+            $fail('validation.no_underscores')->translate();
         }
 
         if ($this->startsWithDashes($value)) {
-            $this->message = __('validation.no_starting_dashes');
-
-            return false;
+            $fail('validation.no_starting_dashes')->translate();
         }
 
         if ($this->endsWithDashes($value)) {
-            $this->message = __('validation.no_ending_dashes');
-
-            return false;
+            $fail('validation.no_ending_dashes')->translate();
         }
-
-        return true;
     }
 
     /**
-     * Get the validation error message.
-     *
-     * @return string
-     */
-    public function message(): string
-    {
-        return $this->message;
-    }
-
-    /**
-     * @param $value
      * @return false|int
      */
     protected function hasUnderscores($value)
@@ -68,7 +36,6 @@ class Slug implements Rule
     }
 
     /**
-     * @param $value
      * @return false|int
      */
     protected function startsWithDashes($value)
@@ -77,7 +44,6 @@ class Slug implements Rule
     }
 
     /**
-     * @param $value
      * @return false|int
      */
     protected function endsWithDashes($value)
