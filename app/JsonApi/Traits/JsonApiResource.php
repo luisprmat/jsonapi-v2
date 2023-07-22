@@ -62,10 +62,12 @@ trait JsonApiResource
 
     public function withResponse($request, $response)
     {
-        $response->header(
-            'Location',
-            route('api.v1.'.$this->getResourceType().'.show', $this->resource)
-        );
+        if ($response->status() === 201) {
+            $response->header(
+                'Location',
+                route('api.v1.'.$this->getResourceType().'.show', $this->resource)
+            );
+        }
     }
 
     public function filterAttributes(array $attributes): array
