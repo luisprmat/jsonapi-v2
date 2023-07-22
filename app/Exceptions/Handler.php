@@ -2,12 +2,7 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Auth\AuthenticationException;
-use Illuminate\Validation\ValidationException;
-use App\Http\Responses\JsonApiValidationErrorResponse;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Throwable;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -28,17 +23,8 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->renderable(function (HttpException $e, Request $request) {
-            $request->isJsonApi() && throw new JsonApi\HttpException($e);
-        })->renderable(function (AuthenticationException $e, Request $request) {
-            $request->isJsonApi() && throw new JsonApi\AuthenticationException();
+        $this->reportable(function (Throwable $e) {
+            //
         });
-    }
-
-    protected function invalidJson($request, ValidationException $exception): JsonResponse
-    {
-        return $request->isJsonApi()
-            ? new JsonApiValidationErrorResponse($exception)
-            : parent::invalidJson($request, $exception);
     }
 }

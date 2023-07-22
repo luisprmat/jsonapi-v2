@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Responses;
+namespace App\JsonApi\Http\Responses;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
@@ -18,10 +18,6 @@ class JsonApiValidationErrorResponse extends JsonResponse
         parent::__construct($data, $status, $headers);
     }
 
-    /**
-     * @param  ValidationException  $exception
-     * @return array
-     */
     protected function formatJsonApiErrors(ValidationException $exception): array
     {
         $title = $exception->getMessage();
